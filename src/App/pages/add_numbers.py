@@ -1,5 +1,5 @@
 import streamlit as st
-from src.Services.compatibilty import *
+from Services.compatibilty import *
 
 # Definir géneros compatibles según la matriz de compatibilidad
 GENRES_SONGS = matrix_show_type_gender_song.keys()

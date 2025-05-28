@@ -1,5 +1,5 @@
-from src.Entities.cultural_number import *
-from src.Services.compatibilty import *
+from Entities.cultural_number import *
+from Services.compatibilty import *
 class theatrical_performance(Cultural):
     def __init__(self, number_id: int, number_name: str, time: int, number_type: str, artists: set[tuple[str, int]],
                  type_performance: str, genders: set[str]):

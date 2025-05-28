@@ -1,6 +1,6 @@
-from src.Entities.cultural_number import *
-from src.Services.web_rating import *
-from src.Services.compatibilty import *
+from Entities.cultural_number import *
+from Services.web_rating import *
+from Services.compatibilty import *
 
 class dancing_performance(Cultural):
     def __init__(self, number_id: int, number_name:str, time: int, number_type: str, artists: set[tuple[str, int]],

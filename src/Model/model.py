@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import random
-from src.Entities.cultural_number import *
+import random as rd
+from Entities.cultural_number import *
 from typing import List, Tuple
 class Model:
     def __init__(self, cultural_numbers : List[Cultural], max_time: int,
@@ -43,13 +44,15 @@ class Model:
         scores = []
         population = []
         while population_size > 0:
-            solution_size = random.randint(self.min_count_numbers, self.max_count_numbers)
+            solution_size = np.random.randint(self.min_count_numbers, self.max_count_numbers)
             remaining_time = self.max_time
             available_numbers = self.cultural_numbers.copy()
             solution = []
             score = 0
             while len(solution) < solution_size:
-                random.shuffle(available_numbers)
+                if not available_numbers:
+                    break
+                np.random.shuffle(available_numbers)
                 candidate = available_numbers.pop()
                 if candidate.time <= remaining_time:
                     remaining_time -= candidate.time
@@ -66,10 +69,10 @@ class Model:
     def tournament(self, population: List[List[Cultural]], scores: List[float]):
         size = len(population) // 2
         while size > 0:
-            i = random.randint(0, len(population))
-            j = random.randint(0, len(population))
+            i = np.random.randint(0, len(population) - 1)
+            j = np.random.randint(0, len(population) - 1)
             while i == j:
-                j = random.randint(0, len(population) - 1)
+                j = np.random.randint(0, len(population) - 1)
             if scores[i] > scores[j]:
                 remove_index = j
             else:
@@ -79,8 +82,8 @@ class Model:
             size -= 1
 
     def crossover(self, parent1: List[Cultural], parent2: List[Cultural]) -> List[Cultural]:
-        midpoint1 = random.randint(1, len(parent1))
-        midpoint2 = random.randint(1, len(parent2))
+        midpoint1 = np.random.randint(0, len(parent1) - 1)
+        midpoint2 = np.random.randint(0, len(parent2) - 1)
         segment1 = parent1[:midpoint1]
         segment2 = parent2[midpoint2:]
         offspring = segment1 + segment2
@@ -92,7 +95,7 @@ class Model:
             total_time -= removed.time
 
         while len(unique_offspring) < self.min_count_numbers:
-            extra = random.choice(self.cultural_numbers)
+            extra = np.random.choice(self.cultural_numbers)
             if total_time + extra.time <= self.max_time:
                 unique_offspring.append(extra)
                 total_time += extra.time
@@ -101,16 +104,18 @@ class Model:
 
     def merge(self, population: List[List[Cultural]]) -> List[List[Cultural]]:
         new_population = []
-        while population:
+        while len(population) > 1:
             list_one = population.pop(0)
             list_last = population.pop()
             new_population.append(self.crossover(list_one, list_last))
+        if population:
+            new_population.append(population.pop())
         return new_population
 
-    def mutate(self, population: List[List[Cultural]], mutation_rate=0.1):
+    def mutate(self, population: List[List[Cultural]], mutation_rate=0.2):
         for solution in population:
-            if random.random() < mutation_rate:
-                idx1, idx2 = random.sample(range(len(solution), 2))
+            if rd.random() < mutation_rate:
+                idx1, idx2 = rd.sample(range(len(solution)), 2)
                 solution[idx1], solution[idx2] = solution[idx2], solution[idx1]
         return population
 
@@ -135,4 +140,8 @@ class Model:
             self.mutate(merge)
             self.evaluate(merge)
             count_gen -= 1
-        return self.best_solution
+        return self.best_solution, max(scores)
+    
+def print_numbers(list_n: list[Cultural]):
+    for item in list_n:
+        print(f"{item.number_name}\n")

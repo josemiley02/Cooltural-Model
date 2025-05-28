@@ -2,9 +2,10 @@ import json
 import numpy as np
 from googleapiclient.discovery import build
 import os
+import Levenshtein
 
 API_KEY = "AIzaSyDnRPKS42UPKN6dn36pG1NSymZWx3wbMGI"
-JSON_FILE = os.path.join(os.getcwd(), "Services", "videos.json")
+JSON_FILE = os.path.join(os.path.dirname(__file__), "videos.json")
 
 def load_videos():
     try:
@@ -20,7 +21,8 @@ def load_videos():
 def find_video_info(video_name: str):
     videos = load_videos()
     for video in videos.values():
-        if video_name.lower() == video['Video'].lower():
+        dist = Levenshtein.distance(video_name.lower(), video['Video'].lower())
+        if dist < 5:
             return video['Likes'], video['Views']
 
     youtube = build('youtube', 'v3', developerKey=API_KEY)
@@ -29,6 +31,8 @@ def find_video_info(video_name: str):
 
     video_id = response['items'][0]['id']['videoId']
     video_title = response['items'][0]['snippet']['title']
+
+    video_title = clean_name(video_title)
 
     request = youtube.videos().list(part="statistics", id=video_id)
     response = request.execute()
@@ -53,3 +57,11 @@ def find_video_info(video_name: str):
 def web_rating(query: str) -> float:
     likes, views = find_video_info(query)
     return np.log(int(views) / int(likes))
+
+def clean_name(name: str) -> str:
+    clean = ""
+    for c in name:
+        if c == '(':
+            break
+        clean += c
+    return clean

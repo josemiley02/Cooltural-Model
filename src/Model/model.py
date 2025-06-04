@@ -33,7 +33,6 @@ class Model:
         if current_solution:
             time_rating = 0
             for i in range(len(current_solution)):
-                current = current_solution[i]
                 inter = len(current_solution[i].artists.intersection(current_number.artists))
                 if inter > 0:
                     time_rating = i
@@ -131,7 +130,7 @@ class Model:
                 self.best_solution = number_list
 
 
-    def get_show(self, count_gen = 10) -> List[Cultural]:
+    def get_show(self, count_gen = 2) -> List[Cultural]:
         self.fill_ratings()
         scores, population = self.get_init_population(random.randint(50,100))
         while count_gen > 0:
@@ -141,7 +140,3 @@ class Model:
             self.evaluate(merge)
             count_gen -= 1
         return self.best_solution, max(scores)
-    
-def print_numbers(list_n: list[Cultural]):
-    for item in list_n:
-        print(f"{item.number_name}\n")

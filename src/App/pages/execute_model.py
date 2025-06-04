@@ -13,7 +13,8 @@ def get_cultural_numbers() -> list[Cultural]:
         cultural_number = None
         if num["Type"] == "Song":
             cultural_number = singing_performance(number_id= number_id, number_name= num["Name"], time= num["Time"], number_type= "Song",
-                                                  song_name= num["Song"],artists= num["Artists"], gender= num["Genre"], composed= num["Composed"])
+                                                  song_name= num["Song"],artists= num["Artists"], gender= num["Genre"], composed= num["Composed"], 
+                                                  use_instrument= num["Instrument"])
         elif num["Type"] == "Dance":
             cultural_number = dancing_performance(number_id= number_id, number_name= num["Name"], time= num["Time"], number_type= "Dance",
                                                    artists=num["Artists"], songs=num["Songs"], styles=num["Styles"], count_dancers=num["Dancers"])
@@ -28,7 +29,7 @@ st.title("Listo para hacerte un guion: ")
 time_max = st.number_input("Tiempo del Show")
 min_count = st.number_input("Cantidad Minima de Numeros", min_value=1)
 max_count = st.number_input("Cantidad Maxima de Numeros", min_value=min_count)
-show_type = st.selectbox("Selecciona el tipo de espectaculo", ["Festival", "Obra de Teatro", "Peña", "Político"])
+show_type = st.selectbox("Selecciona el tipo de espectaculo", ["Festival", "Obra de Teatro", "Peña", "Políticos"])
 
 if st.button("Generar Guion"):
     list_cultural_numbers = get_cultural_numbers()

@@ -172,3 +172,36 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Data Base for Videos
+.json
+
+# Archivos auxiliares de LaTeX
+*.aux
+*.log
+*.toc
+*.out
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.bbl
+*.blg
+
+# Archivos temporales de edición
+*~
+*.bak
+*.tmp
+
+# Archivos de salida intermedios
+*.dvi
+*.ps
+
+# Directorios temporales
+_auto/
+_build/

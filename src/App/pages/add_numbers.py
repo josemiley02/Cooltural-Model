@@ -1,5 +1,6 @@
 import streamlit as st
 from Services.compatibilty import *
+from Services.database import VIDEOS
 
 # Definir géneros compatibles según la matriz de compatibilidad
 GENRES_SONGS = matrix_show_type_gender_song.keys()
@@ -32,13 +33,14 @@ if artists:
 
 # 🟢 Si se selecciona "Song", mostrar campos adicionales
 if number_type == "Song":
-    song_name = st.text_input("Nombre de la Canción")
+    song_name = st.selectbox("Ingrese el nombre la cancion", VIDEOS.keys(), accept_new_options= True)
     song_genre = st.selectbox("Género de la canción", GENRES_SONGS)
     composed = st.checkbox("¿Es una canción original compuesta por los artistas?")
+    instrument = st.checkbox("¿Se usan instrumentos en el numero?")
 
 if number_type == "Dance":
-    songs_names = st.text_area("Ingrese las canciones, separadas por comas")
-    songs_set = set(songs_names.split(","))
+    songs_names = st.multiselect("Ingrese las canciones", VIDEOS.keys(), accept_new_options= True)
+    songs_set = set(songs_names)
     styles_names = st.multiselect("Escoja los estlos", TYPES_DANCES)
     styles_set = set(styles_names)
     count_dancer = st.number_input("Cantidad de Bailarines", min_value=1)
@@ -60,7 +62,8 @@ if st.button("Guardar Número Cultural"):
         new_number.update({
             "Song": song_name,
             "Genre": song_genre,
-            "Composed": composed
+            "Composed": composed,
+            "Instrument": instrument
         })
 
     if number_type == "Dance":

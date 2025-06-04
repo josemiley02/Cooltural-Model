@@ -4,11 +4,12 @@ from Services.compatibilty import *
 
 class singing_performance(Cultural):
     def __init__(self, number_id: int, number_name: str, time: int, number_type: str, artists: set[tuple[str, int]],
-                 song_name: str, gender: str, composed: bool):
+                 song_name: str, gender: str, composed: bool, use_instrument: bool):
         super().__init__(number_id, number_name, time, number_type, artists)
         self.song_name = song_name
         self.gender = gender
         self.composed = composed
+        self.use_instrument = use_instrument
 
     def calculate_rating(self, show_type: str):
         population_rating = self.artists_rating()
@@ -16,6 +17,8 @@ class singing_performance(Cultural):
             population_rating *= 2
         else:
             population_rating += web_rating(self.song_name)
+        if self.use_instrument:
+            population_rating += 0.5
         compatibility = get_compatibility_gender_show_type(self.gender, show_type)
         return population_rating + compatibility
 

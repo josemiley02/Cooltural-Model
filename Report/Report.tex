@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+
+\title{Cooltural Model}
+\author{Jos\'e Miguel Leyva De la Cruz}
+\date{}
+
+\begin{document}
+
+\maketitle
+\setlength{\parindent}{1.5em}
+
+\section{Problema}
+
+La primera parte de cualquier intento de soluci\'on de una problem\'atica consiste en realizar
+una definici\'on formal de la misma. Por consiguiente a continuaci\'on se muestra una descripci\'on
+de la misma, la cual puede ser lo m\'as cercano a una definici\'on.
+
+\begin{center}
+    \textbf{Gui\'on De Espect\'aculo}
+\end{center}
+
+Una actividad cultural, del estilo que sea, siempre va acompa\~nada de una secuencia de n\'umeros 
+o actuaciones, las cuales son listadas en el famoso \textit{Gui\'on}. Siempre es un problema encontrar
+la mejor secuencia que se ajusta a un Show en espec\'ifico, se deben tener en cuenta numerosos detalles,
+tiempo que se espera que dure, cantidad de n\'umeros que se desean presentar y que exista una relaci\'on
+entre estos, as\'i como una armon\'ia entre los mismos. 
+
+El problema consiste en que se tienen una serie de n\'umeros culturales y se quiere confeccionar el
+mejor gui\'on posible para un tipo de espect\'aculo determinado, teniendo en cuenta el tiempo de duraci\'on
+de cada n\'umero y la cantidad deseada de los mismos.
+
+
+\subsection*{Definici\'on Formal:}
+Sea un conjunto de  $N$ n\'umeros culturales. Se desea crear una secuencia ordenada $S$ 
+de dichos n\'umeros tal que se maximice el nivel de aceptaci\'on del p\'ublico.
+
+\begin{equation*}
+    max(P) = \sum_{i = 1}^{|S|} A_i
+\end{equation*}
+
+\begin{center}
+    $s.a:$
+\end{center}
+
+\begin{equation*}
+    \sum_{i = 1}^{|S|} T_i \leq T
+\end{equation*}
+
+\begin{equation*}
+    m \leq |S| \leq M
+\end{equation*}
+
+\newpage
+
+Donde: \begin{itemize}
+    \item $A_i$ Indice de aceptaci\'on del i-\'esimo n\'umero.
+    \item $T_i$ Tiempo de duraci\'on del i-\'esime n\'umero.
+    \item $T$ Tiempo m\'aximo del Show
+    \item $m$, $M$ Cantidad m\'inima y m\'axima de n\'umeros deseados respectivamente.
+\end{itemize}
+
+En la presente se propone un modelo matem\'atico el cual permite la resoluci\'on de 
+la problem\'atica planteada.  
+
+\section*{Importancia de Este Problema:}
+
+El arte ha acompa\~nado a la humanidad en el camino de su evoluci\'on y desarrollo. 
+En los \'ultimos tiempos se ha tratado de combinar el mundo art\'istico con el tecnol\'ogico 
+y crear nuevas facilidades y habilidades para este mundillo. Los organizadores de eventos 
+siempre deben tener en cuenta el desarrollo del gui\'on para poder crear un conjunto armonioso
+y de gran agrado para el p\'ublico.
+
+Un modelo que permita la creaci\'on de un gui\'on y que este tenga en cuenta la aceptaci\'on 
+y satisfacci\'on del p\'ublico evitar\'ia el tedioso de organizar los n\'umeros culturales
+y velar porque estos cumplan un orden l\'ogico. 
+
+Es una oportunidad \'unica para vincular el arte con la tecnolog\'ia sin que una esfera opaque a la otra.
+Adem\'as puede ser la puerta a un sin n\'umero de oportunidades y de conexiones, incluso puede aportar 
+guiones m\'as creativos o dar mejores ideas que las pensadas por las personas.
+
+\section*{Soluci\'on al Problema:}
+
+La soluci\'on de la problem\'atica planteada se dividi\'o en dos momentos importantes, una realizaci\'on 
+de la modelaci\'on y una implementaci\'on computacional para darle soluci\'on al problema. En t\'erminos
+computacionales este problema puede ser descrito como un \textbf{NP-Hard}, ya que en las soluciones se 
+debe tener en cuenta el orden de los conjuntos dados como respuesta. B\'asicamente dado un subconjunto
+de n\'umeros culturales, cualquier permutaci\'on del mismo puede ser una coluci\'on al problema. Cabe 
+destacar adem\'as que se busca maximizar, por lo que en teor\'ia todas las posibles soluciones deben
+ser analizadas.
+
+La explicaci\'on de la modelac\'on ser\'a el primer punto de esta secci\'on, y luego se explicar\'a 
+brevemente el c\'odigo y los algoritmos utilizados.
+
+\subsubsection*{Modelaci\'on:}
+Se desea buscar una manera de cuantificar el nivel de aceptaci\'on del p\'ublico respecto a un n\'umero 
+cultural dado, para ello lo primero es la definici\'on de la entidad \textit{N\'umero Cultural (Cultural_Number)}. Un n\'umero cultural,
+de manera general cuenta con un tiempo de duraci\'on, un nombre, artistas involucrados y un tipo de manifestaci\'on. Se conoce
+que las manisfestaciones art\'isticas son dis\'imiles y cada d\'ia pueden aparecer nuevas, sin embargo esta 
+primera versi\'on contar\'a solamente con Canci\'on, Baile y Teatro. 
+\begin{itemize}
+    \item \textbf{Canci\'on (Song): } La entidad tendr\'a las mismas propiedades de N\'umero Cultural, agregando a estas
+    el g\'enero de la canci\'on, si es compuesta por el artista o no, si lleva el uso de alg\'un instrumento.
+    \item \textbf{Baile (Dance): } Al igual que \textbf{Song} esta entidad contar\'a con las mismas propiedades que \textbf{Cultural_Number},
+    extiendose con: cantidad de bailarines, estilos de bailes implicados, canciones que se bailaran
+    \item \textbf{Teatro (Theatric): } Cuenta con lo mismo que Cultural_Number
+\end{itemize}
+
+
+
+\end{document}

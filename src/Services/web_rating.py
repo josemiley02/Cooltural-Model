@@ -1,58 +1,55 @@
 import json
 import numpy as np
+from Services.database import *
 from googleapiclient.discovery import build
-import os
+
 import Levenshtein
 
 API_KEY = "AIzaSyDnRPKS42UPKN6dn36pG1NSymZWx3wbMGI"
-JSON_FILE = os.path.join(os.path.dirname(__file__), "videos.json")
-
-def load_videos():
-    try:
-        with open(JSON_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except json.JSONDecodeError:
-        print("Error: El archivo JSON tiene un formato inválido.")
-        return {}
-    except FileNotFoundError:
-        print("Error: Archivo no encontrado.")
-        return {}
 
 def find_video_info(video_name: str):
-    videos = load_videos()
-    for video in videos.values():
+    for video in VIDEOS.values():
         dist = Levenshtein.distance(video_name.lower(), video['Video'].lower())
         if dist < 5:
             return video['Likes'], video['Views']
 
     youtube = build('youtube', 'v3', developerKey=API_KEY)
-    request = youtube.search().list(q = video_name, part='snippet', type='video', maxResults=1)
-    response = request.execute()
+    search_response = youtube.search().list(
+        q=video_name, part='snippet', type='video', maxResults=3
+    ).execute()
 
-    video_id = response['items'][0]['id']['videoId']
-    video_title = response['items'][0]['snippet']['title']
+    best_views = -1
+    best_video = None
 
-    video_title = clean_name(video_title)
+    for item in search_response["items"]:
+        video_id = item["id"]["videoId"]
+        video_snippet = item["snippet"]
+        video_title = clean_name(video_snippet["title"])
 
-    request = youtube.videos().list(part="statistics", id=video_id)
-    response = request.execute()
+        stats_response = youtube.videos().list(
+            part="statistics", id=video_id
+        ).execute()
 
-    stats = response["items"][0]["statistics"]
-    views = stats.get("viewCount", "Desconocido")
-    likes = stats.get("likeCount", "Desconocido")
+        stats = stats_response["items"][0]["statistics"]
+        views = int(stats.get("viewCount", 0))
+        likes = int(stats.get("likeCount", 0))
 
-    video_data = {
-        "Video": video_title,
-        "URL": f"https://www.youtube.com/watch?v={video_id}",
-        "Views": views,
-        "Likes": likes
-    }
+        if views > best_views:
+            best_views = views
+            best_video = {
+                "Video": video_title,
+                "URL": f"https://www.youtube.com/watch?v={video_id}",
+                "Views": views,
+                "Likes": likes
+            }
 
-    videos[video_title] = video_data
-    with open(JSON_FILE, "w", encoding="utf-8") as f:
-        json.dump(videos, f, indent=4, ensure_ascii=False)
-
-    return likes, views
+    if best_video:
+        VIDEOS[best_video["Video"]] = best_video
+        with open(JSON_FILE, "w", encoding="utf-8") as f:
+            json.dump(VIDEOS, f, indent=4, ensure_ascii=False)
+        return best_video["Likes"], best_video["Views"]
+    
+    return 1, 1
 
 def web_rating(query: str) -> float:
     likes, views = find_video_info(query)

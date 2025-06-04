@@ -1,5 +1,6 @@
 from Entities.cultural_number import *
 from Services.compatibilty import *
+
 class theatrical_performance(Cultural):
     def __init__(self, number_id: int, number_name: str, time: int, number_type: str, artists: set[tuple[str, int]],
                  type_performance: str, genders: set[str]):
@@ -10,7 +11,8 @@ class theatrical_performance(Cultural):
     def calculate_rating(self, show_type: str):
         comp_gender = self.calculate_compatibility_gender(show_type)
         comp_type = self.calculate_compatibility_theatrical_type(show_type)
-        return comp_type + comp_gender
+        artist_metric = self.artist_popularity()
+        return comp_type + comp_gender + artist_metric
 
     def calculate_compatibility_gender(self, show_type):
         comp_gender = 0
@@ -20,3 +22,9 @@ class theatrical_performance(Cultural):
 
     def calculate_compatibility_theatrical_type(self, show_type):
         return get_compatibility_type_theatric(self.type_performance, show_type)
+    
+    def artist_popularity(self):
+        score = 0
+        for artist, popularity in self.artists:
+            score += popularity
+        return score / len(self.artists)

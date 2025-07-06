@@ -1,115 +1,83 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
 \usepackage{graphicx}
-\usepackage{amsmath}
 \usepackage{hyperref}
-\usepackage{indentfirst}
+\usepackage{amsmath}
 
-\title{Cooltural Model}
-\author{Jos\'e Miguel Leyva De la Cruz}
-\date{}
+\title{Análisis Científico-Técnico de un Sistema de Generación Automatizada de Guiones Culturales}
+\author{Tu Nombre}
+\date{\today}
 
 \begin{document}
 
 \maketitle
-\setlength{\parindent}{1.5em}
 
-\section{Problema}
+\begin{abstract}
+Este informe evalúa un sistema computacional diseñado para generar guiones culturales optimizados, basado en métricas cuantificables como popularidad de canciones, complejidad de bailes y compatibilidad artística. Se analiza su arquitectura, modelado matemático, y contribuciones potenciales a la intersección entre ciencia de datos y arte.
+\end{abstract}
 
-La primera parte de cualquier intento de soluci\'on de una problem\'atica consiste en realizar
-una definici\'on formal de la misma. Por consiguiente a continuaci\'on se muestra una descripci\'on
-de la misma, la cual puede ser lo m\'as cercano a una definici\'on.
+\section{Introducción}
+El proyecto implementa un sistema de recomendación para espectáculos culturales (teatro, música, danza) mediante técnicas de \textbf{optimización multiobjetivo} y \textbf{algoritmos evolutivos}. Su objetivo es automatizar la creación de guiones, tradicionalmente subjetiva, usando datos estructurados.
 
-\begin{center}
-    \textbf{Gui\'on De Espect\'aculo}
-\end{center}
+\section{Modelado del Sistema}
 
-Una actividad cultural, del estilo que sea, siempre va acompa\~nada de una secuencia de n\'umeros 
-o actuaciones, las cuales son listadas en el famoso \textit{Gui\'on}. Siempre es un problema encontrar
-la mejor secuencia que se ajusta a un Show en espec\'ifico, se deben tener en cuenta numerosos detalles,
-tiempo que se espera que dure, cantidad de n\'umeros que se desean presentar y que exista una relaci\'on
-entre estos, as\'i como una armon\'ia entre los mismos. 
-
-El problema consiste en que se tienen una serie de n\'umeros culturales y se quiere confeccionar el
-mejor gui\'on posible para un tipo de espect\'aculo determinado, teniendo en cuenta el tiempo de duraci\'on
-de cada n\'umero y la cantidad deseada de los mismos.
-
-
-\subsection*{Definici\'on Formal:}
-Sea un conjunto de  $N$ n\'umeros culturales. Se desea crear una secuencia ordenada $S$ 
-de dichos n\'umeros tal que se maximice el nivel de aceptaci\'on del p\'ublico.
-
-\begin{equation*}
-    max(P) = \sum_{i = 1}^{|S|} A_i
-\end{equation*}
-
-\begin{center}
-    $s.a:$
-\end{center}
-
-\begin{equation*}
-    \sum_{i = 1}^{|S|} T_i \leq T
-\end{equation*}
-
-\begin{equation*}
-    m \leq |S| \leq M
-\end{equation*}
-
-\newpage
-
-Donde: \begin{itemize}
-    \item $A_i$ Indice de aceptaci\'on del i-\'esimo n\'umero.
-    \item $T_i$ Tiempo de duraci\'on del i-\'esime n\'umero.
-    \item $T$ Tiempo m\'aximo del Show
-    \item $m$, $M$ Cantidad m\'inima y m\'axima de n\'umeros deseados respectivamente.
-\end{itemize}
-
-En la presente se propone un modelo matem\'atico el cual permite la resoluci\'on de 
-la problem\'atica planteada.  
-
-\section*{Importancia de Este Problema:}
-
-El arte ha acompa\~nado a la humanidad en el camino de su evoluci\'on y desarrollo. 
-En los \'ultimos tiempos se ha tratado de combinar el mundo art\'istico con el tecnol\'ogico 
-y crear nuevas facilidades y habilidades para este mundillo. Los organizadores de eventos 
-siempre deben tener en cuenta el desarrollo del gui\'on para poder crear un conjunto armonioso
-y de gran agrado para el p\'ublico.
-
-Un modelo que permita la creaci\'on de un gui\'on y que este tenga en cuenta la aceptaci\'on 
-y satisfacci\'on del p\'ublico evitar\'ia el tedioso de organizar los n\'umeros culturales
-y velar porque estos cumplan un orden l\'ogico. 
-
-Es una oportunidad \'unica para vincular el arte con la tecnolog\'ia sin que una esfera opaque a la otra.
-Adem\'as puede ser la puerta a un sin n\'umero de oportunidades y de conexiones, incluso puede aportar 
-guiones m\'as creativos o dar mejores ideas que las pensadas por las personas.
-
-\section*{Soluci\'on al Problema:}
-
-La soluci\'on de la problem\'atica planteada se dividi\'o en dos momentos importantes, una realizaci\'on 
-de la modelaci\'on y una implementaci\'on computacional para darle soluci\'on al problema. En t\'erminos
-computacionales este problema puede ser descrito como un \textbf{NP-Hard}, ya que en las soluciones se 
-debe tener en cuenta el orden de los conjuntos dados como respuesta. B\'asicamente dado un subconjunto
-de n\'umeros culturales, cualquier permutaci\'on del mismo puede ser una coluci\'on al problema. Cabe 
-destacar adem\'as que se busca maximizar, por lo que en teor\'ia todas las posibles soluciones deben
-ser analizadas.
-
-La explicaci\'on de la modelac\'on ser\'a el primer punto de esta secci\'on, y luego se explicar\'a 
-brevemente el c\'odigo y los algoritmos utilizados.
-
-\subsubsection*{Modelaci\'on:}
-Se desea buscar una manera de cuantificar el nivel de aceptaci\'on del p\'ublico respecto a un n\'umero 
-cultural dado, para ello lo primero es la definici\'on de la entidad \textit{N\'umero Cultural (Cultural_Number)}. Un n\'umero cultural,
-de manera general cuenta con un tiempo de duraci\'on, un nombre, artistas involucrados y un tipo de manifestaci\'on. Se conoce
-que las manisfestaciones art\'isticas son dis\'imiles y cada d\'ia pueden aparecer nuevas, sin embargo esta 
-primera versi\'on contar\'a solamente con Canci\'on, Baile y Teatro. 
+\subsection{Arquitectura General}
+El sistema se compone de:
 \begin{itemize}
-    \item \textbf{Canci\'on (Song): } La entidad tendr\'a las mismas propiedades de N\'umero Cultural, agregando a estas
-    el g\'enero de la canci\'on, si es compuesta por el artista o no, si lleva el uso de alg\'un instrumento.
-    \item \textbf{Baile (Dance): } Al igual que \textbf{Song} esta entidad contar\'a con las mismas propiedades que \textbf{Cultural_Number},
-    extiendose con: cantidad de bailarines, estilos de bailes implicados, canciones que se bailaran
-    \item \textbf{Teatro (Theatric): } Cuenta con lo mismo que Cultural_Number
+    \item \textbf{Entidades}: Clases como \texttt{theatrical\_performance}, \texttt{singing\_performance}, y \texttt{dancing\_performance} que representan números artísticos.
+    \item \textbf{Métricas}: Popularidad de artistas, compatibilidad género-espectáculo (matrices en \texttt{compatibilty.py}), y ratings de canciones (vía API de YouTube en \texttt{web\_rating.py}).
+    \item \textbf{Algoritmo de Optimización}: Un modelo evolutivo (\texttt{model.py}) que selecciona la mejor combinación de números bajo restricciones de tiempo y diversidad.
 \end{itemize}
 
+\subsection{Modelado Matemático}
+Cada número artístico calcula un \textit{rating} mediante:
+\[
+\text{Rating} = \sum_{i} w_i \cdot f_i(\text{métrica}_i)
+\]
+donde \( f_i \) son funciones de normalización (ej: promedio de popularidad de artistas) y \( w_i \) son pesos implícitos.
 
+El algoritmo evolutivo:
+\begin{enumerate}
+    \item Genera una población inicial de soluciones (secuencias de números).
+    \item Evalúa soluciones con una función de fitness que considera:
+    \[
+    \text{Fitness} = \sum \text{Ratings} - \text{Penalizaciones por repetición de tipo/artista}
+    \]
+    \item Aplica selección por torneo, cruce (\texttt{crossover}) y mutación para mejorar soluciones.
+\end{enumerate}
+
+\section{Aportes Científicos}
+
+\subsection{Innovaciones}
+\begin{itemize}
+    \item \textbf{Matrices de Compatibilidad}: Cuantifican relaciones entre géneros artísticos y contextos (ej: "Salsa" tiene alta compatibilidad con "Festival").
+    \item \textbf{Integración de Datos Externos}: Uso de APIs (YouTube) para obtener popularidad en tiempo real.
+    \item \textbf{Penalizaciones Dinámicas}: Evita monotonía penalizando repeticiones de artistas o estilos en el guion.
+\end{itemize}
+
+\subsection{Relevancia}
+\begin{itemize}
+    \item \textbf{Industria Cultural}: Reduce la dependencia de expertos humanos en planificación de eventos.
+    \item \textbf{Computational Creativity}: Demuestra que la creatividad puede modelarse mediante reglas cuantificables.
+    \item \textbf{Personalización}: El sistema se adapta a distintos tipos de espectáculos (ej: "Peña" vs. "Teatro").
+\end{itemize}
+
+\section{Limitaciones y Mejoras}
+\subsection{Desafíos}
+\begin{itemize}
+    \item \textbf{Sesgos en Datos}: Las métricas de popularidad pueden no reflejar preferencias locales.
+    \item \textbf{Subjetividad Artística}: Ciertas cualidades (ej: "emocionalidad") son difíciles de cuantificar.
+\end{itemize}
+
+\subsection{Mejoras Propuestas}
+\begin{itemize}
+    \item Incorporar \textbf{aprendizaje automático} para ajustar pesos de métricas basado en feedback humano.
+    \item Usar \textbf{NLP} para analizar letras de canciones y asignar emociones.
+    \item Ampliar matrices de compatibilidad con datos antropológicos.
+\end{itemize}
+
+\section{Conclusión}
+El proyecto representa un avance significativo en la automatización de procesos creativos, combinando técnicas de ciencia de datos con dominio artístico. Su enfoque híbrido (reglas explícitas + optimización) lo hace escalable y adaptable, abriendo nuevas líneas de investigación en \textbf{gestión cultural basada en datos}.
 
 \end{document}

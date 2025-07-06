@@ -10,3 +10,5 @@ class Cultural(ABC):
     @abstractmethod
     def calculate_rating(self, show_type: str):
         pass
+
+    # Valor esperado del Numero (Subjetivo)

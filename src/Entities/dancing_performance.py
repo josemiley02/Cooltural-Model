@@ -28,5 +28,7 @@ class dancing_performance(Cultural):
             compatibility += get_compatibility_style_show_type(style, show_type)
         return compatibility / len(self.styles)
 
+    ## Cambiar a una Normal
+    ## Probar Interpolacion en 2 variable
     def time_person_rating(self):
         return self.time * len(self.songs) / max(self.count_dancers, len(self.artists))
